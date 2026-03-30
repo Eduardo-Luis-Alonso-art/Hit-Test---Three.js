@@ -65,9 +65,9 @@
     </style>
 </head>
 <body>
-    <div id="info">🐉 Dragão 3D com Hit-Test<br>Toque no chão para posicionar!</div>
-    <div id="status">🔍 Aguardando...</div>
-    <button id="ar-button">🎯 INICIAR AR</button>
+    <div id="info">Dragão 3D com Hit-Test<br>Toque no chão para posicionar!</div>
+    <div id="status">Aguardando...</div>
+    <button id="ar-button">INICIAR AR</button>
 
     <script type="importmap">
         {
@@ -80,7 +80,7 @@
     <script type="module">
         import * as THREE from 'three';
         
-        console.log('✅ Three.js carregado:', THREE.version);
+        console.log('Three.js carregado:', THREE.version);
         
         // Variáveis
         let camera, scene, renderer;
@@ -206,16 +206,16 @@
         // Iniciar AR
         async function startAR() {
             if (!navigator.xr) {
-                updateStatus('❌ WebXR não suportado!', true);
+                updateStatus('WebXR não suportado!', true);
                 return;
             }
             
-            updateStatus('🎯 Solicitando acesso à câmera...');
+            updateStatus('Solicitando acesso à câmera...');
             
             try {
                 const supported = await navigator.xr.isSessionSupported('immersive-ar');
                 if (!supported) {
-                    updateStatus('❌ AR não suportado neste dispositivo', true);
+                    updateStatus('AR não suportado neste dispositivo', true);
                     return;
                 }
                 
@@ -226,7 +226,7 @@
                 await renderer.xr.setSession(session);
                 isARSessionActive = true;
                 arButton.style.display = 'none';
-                updateStatus('✅ AR ativado! Aponte para o chão');
+                updateStatus('AR ativado! Aponte para o chão');
                 
                 const referenceSpace = await session.requestReferenceSpace('local');
                 hitTestSource = await session.requestHitTestSource({ space: referenceSpace });
@@ -235,7 +235,7 @@
                     isARSessionActive = false;
                     hitTestSource = null;
                     arButton.style.display = 'block';
-                    updateStatus('🔍 Sessão encerrada');
+                    updateStatus('Sessão encerrada');
                     if (currentDragon) {
                         scene.remove(currentDragon);
                         currentDragon = null;
@@ -243,7 +243,7 @@
                 });
             } catch (err) {
                 console.error(err);
-                updateStatus(`❌ ${err.message}`, true);
+                updateStatus(`Erro: ${err.message}`, true);
                 arButton.style.display = 'block';
             }
         }
@@ -259,7 +259,7 @@
             currentDragon.rotation.y = Math.atan2(position.x, position.z);
             
             scene.add(currentDragon);
-            updateStatus('🐉 Dragão posicionado! Toque em outro local para mover');
+            updateStatus('Dragão posicionado! Toque em outro local para mover');
             
             // Animação
             currentDragon.scale.set(0, 0, 0);
@@ -278,7 +278,7 @@
         // MODO DEBUG - TESTE NO PC
         // ============================================
         function enableDebugMode() {
-            console.log('🔧 Modo DEBUG ativado');
+            console.log('Modo DEBUG ativado');
             arButton.style.display = 'none';
             
             // Criar dragão
@@ -325,7 +325,7 @@
                 document.body.style.cursor = 'default';
             });
             
-            updateStatus('🔧 Modo DEBUG - Dragão visível! Arraste o mouse para rotacionar');
+            updateStatus('Modo DEBUG - Dragão visível! Arraste o mouse para rotacionar');
             
             function animateDebug() {
                 requestAnimationFrame(animateDebug);
@@ -383,16 +383,16 @@
             if (navigator.xr) {
                 const supported = await navigator.xr.isSessionSupported('immersive-ar');
                 if (supported) {
-                    updateStatus('✅ Pronto! Clique no botão azul');
+                    updateStatus('Pronto! Clique no botão azul');
                 } else {
-                    updateStatus('⚠️ AR não suportado neste dispositivo', true);
+                    updateStatus('AR não suportado neste dispositivo', true);
                     arButton.disabled = true;
-                    arButton.textContent = '❌ AR NÃO SUPORTADO';
+                    arButton.textContent = 'AR NÃO SUPORTADO';
                 }
             } else {
-                updateStatus('❌ Navegador sem suporte a WebXR', true);
+                updateStatus('Navegador sem suporte a WebXR', true);
                 arButton.disabled = true;
-                arButton.textContent = '❌ WEBXR NÃO DISPONÍVEL';
+                arButton.textContent = 'WEBXR NÃO DISPONÍVEL';
             }
             
             // Animação principal
